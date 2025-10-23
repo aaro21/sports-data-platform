@@ -236,3 +236,7 @@ terraform.rc
 # Ignore Terraform lock file for provider versions (uncomment if you want to ignore it)
 # Some teams prefer to commit this file to ensure consistent provider versions
 # .terraform.lock.hcl
+
+# Terraform plan files
+*.tfplan
+*.tfplan.json
