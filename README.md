@@ -13,52 +13,102 @@ A modern data platform for collecting, processing, and analyzing sports data acr
 ## Getting Started
 
 ### Prerequisites
-- Azure account 
+- Azure account
 - Terraform >= 1.5
-- Python 3.9+
-- Docker & Docker Compose
+- Python 3.12+
+- [uv](https://docs.astral.sh/uv/) package manager
+- Docker & Docker Compose (for Airflow)
 
 ### Quick Start
 
-1. Clone the repository
+1. **Clone the repository**
 ```bash
 git clone https://github.com/aaro21/sports-data-platform.git
 cd sports-data-platform
 ```
 
-2. Set up environment
+2. **Set up Python environment**
+```bash
+# Install uv if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies
+uv sync
+```
+
+3. **Configure environment variables**
 ```bash
 cp .env.example .env
-# Edit .env with your credentials
+# Edit .env with your Azure credentials
 ```
 
-3. Deploy infrastructure
+4. **Deploy infrastructure** (see [infrastructure/terraform/environments/dev/README.md](infrastructure/terraform/environments/dev/README.md))
 ```bash
-cd infrastructure/terraform/environments/dev
-terraform init
-terraform plan
-terraform apply
+# Deploy core resources (always-on)
+cd infrastructure/terraform/environments/dev/core
+terraform init && terraform apply
+
+# Deploy database (on-demand)
+cd ../database
+terraform init && terraform apply
+
+# Deploy compute/Airflow (on-demand)
+cd ../compute
+terraform init && terraform apply
 ```
 
-4. Start Airflow locally
+5. **Run your first data ingestion**
 ```bash
-cd airflow
-docker-compose up -d
+# Activate virtual environment
+source .venv/bin/activate
+
+# Run NFL data ingestion
+python -m src.ingestion.nfl.ingest
 ```
 
-5. Run dbt models
+6. **Run dbt transformations**
 ```bash
-cd dbt
+cd src/transformation/sports_dbt
 dbt run
 ```
 
 ## Project Structure
 ```
-├── infrastructure/  # Terraform IaC
-├── dbt/            # Data transformation models
-├── airflow/        # Data pipeline orchestration
-├── src/            # Python extraction/loading code
-└── docs/           # Documentation
+sports-data-platform/
+├── .github/                    # GitHub Actions workflows
+├── dags/                       # Airflow DAG definitions
+│   ├── nfl/                   # NFL-specific DAGs
+│   ├── nba/                   # NBA-specific DAGs
+│   ├── nhl/                   # NHL-specific DAGs
+│   └── common/                # Shared utilities
+├── data/                       # Local data samples (gitignored)
+│   ├── raw/                   # Sample raw data
+│   └── processed/             # Sample processed data
+├── docs/                       # Documentation
+├── infrastructure/             # Terraform IaC
+│   └── terraform/
+│       └── environments/dev/
+│           ├── core/          # Always-on (Storage, RG)
+│           ├── database/      # On-demand (PostgreSQL)
+│           └── compute/       # On-demand (Airflow VM)
+├── notebooks/                  # Jupyter notebooks
+├── scripts/                    # Utility scripts
+│   ├── setup/
+│   └── deploy/
+├── src/                        # Python source code
+│   ├── ingestion/             # Data ingestion modules
+│   │   ├── nfl/              # NFL data sources
+│   │   ├── nba/              # NBA data sources
+│   │   └── nhl/              # NHL data sources
+│   ├── transformation/        # dbt transformations
+│   │   └── sports_dbt/       # dbt project
+│   └── utils/                 # Shared utilities
+├── tests/                      # Unit & integration tests
+│   ├── unit/
+│   └── integration/
+├── .env.example               # Example environment variables
+├── pyproject.toml            # uv project configuration
+└── README.md
 ```
 
 ## Sports Coverage

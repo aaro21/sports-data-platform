@@ -1,0 +1,15 @@
+
+# Local data files
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# dbt
+src/transformation/sports_dbt/target/
+src/transformation/sports_dbt/dbt_packages/
+src/transformation/sports_dbt/logs/
+
+# Logs
+logs/
+*.log

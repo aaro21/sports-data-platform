@@ -24,7 +24,17 @@
       "Bash(az postgres flexible-server list-skus:*)",
       "Bash(terraform import:*)",
       "Bash(git add:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(tree:*)",
+      "Bash(uv init:*)",
+      "Bash(curl -LsSf https://astral.sh/uv/install.sh)",
+      "Bash(sh)",
+      "Bash(export PATH=\"$HOME/.local/bin:$PATH\")",
+      "Bash(uv:*)",
+      "Bash(source:*)",
+      "Bash(dbt init:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,16 @@
+[project]
+name = "sports-data-platform"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "apache-airflow>=3.1.0",
+    "azure-identity>=1.25.1",
+    "azure-storage-blob>=12.27.0",
+    "dbt-postgres>=1.9.1",
+    "pandas>=2.3.3",
+    "pytest>=8.4.2",
+    "pytest-cov>=7.0.0",
+    "python-dotenv>=1.1.1",
+    "requests>=2.32.5",
+]
